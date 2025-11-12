@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/yourusername/laravel-demo-app.git'
+                git 'https://github.com/hieptvh18/laravel-demo-app.git'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'b247769d-1205-4ae0-a3d4-76093c6b738d') {
                         docker.image("${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}").push()
                     }
                 }
@@ -33,11 +33,11 @@ pipeline {
         stage('Update GitOps Repo') {
             steps {
                 sh '''
-                git clone https://github.com/yourusername/laravel-demo-deploy.git
-                cd laravel-demo-deploy/k8s
+                git clone https://github.com/hieptvh18/laravel-devops.git
+                cd laravel-devops/k8s
                 sed -i "s|image:.*|image: ${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}|g" deployment.yaml
-                git config user.email "jenkins@example.com"
-                git config user.name "jenkins"
+                git config user.email "hieptvh18@gmail.com"
+                git config user.name "hieptvh18"
                 git add .
                 git commit -m "update image to build ${BUILD_NUMBER}"
                 git push
