@@ -3,9 +3,17 @@ pipeline {
     environment {
         DOCKERHUB_USER = 'hieptvh18'
         IMAGE_NAME = 'laravel-demo'
+        PATH = "/usr/local/bin:/usr/bin:/bin:${env.PATH}"
     }
 
     stages {
+        stage('Test Docker') {
+            steps {
+                sh 'docker --version'
+                sh 'docker info'
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/hieptvh18/laravel-demo-app.git'
