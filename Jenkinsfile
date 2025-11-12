@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/hieptvh18/laravel-demo-app.git'
+                git branch: 'main', url: 'https://github.com/hieptvh18/laravel-demo-app.git'
             }
         }
 
