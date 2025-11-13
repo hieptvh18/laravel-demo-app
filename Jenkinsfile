@@ -7,13 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Test Docker') {
-            steps {
-                sh 'docker --version'
-                sh 'docker info'
-            }
-        }
-
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/hieptvh18/laravel-demo-app.git'
@@ -43,13 +36,14 @@ pipeline {
         stage('Update GitOps Repo') {
             steps {
                 sh '''
+                rm -rf laravel-devops
                 git clone https://github.com/hieptvh18/laravel-devops.git
                 cd laravel-devops/k8s
-                sed -i '' "s|image:.*|image: ${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}|g" deployment.yaml
+                sed -i "s|image:.*|image: ${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}|g" deployment.yaml
                 git config user.email "hieptvh18@gmail.com"
                 git config user.name "hieptvh18"
                 git add .
-                git commit -m "update image to build ${BUILD_NUMBER}"
+                git diff --cached --quiet || git commit -m "update image to build ${BUILD_NUMBER}"
                 git push
                 '''
             }
