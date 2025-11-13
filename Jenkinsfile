@@ -26,8 +26,10 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'b247769d-1205-4ae0-a3d4-76093c6b738d') {
-                        docker.image("${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}").push()
+                    withEnv(["PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]) {
+                        docker.withRegistry('https://index.docker.io/v1/', 'b247769d-1205-4ae0-a3d4-76093c6b738d') {
+                            docker.image("${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}").push()
+                        }
                     }
                 }
             }
