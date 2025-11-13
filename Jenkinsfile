@@ -44,7 +44,7 @@ pipeline {
                 rm -rf laravel-devops
                 git clone https://github.com/hieptvh18/laravel-devops.git
                 cd laravel-devops/k8s
-                sed -i "s|image:.*|image: ${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}|g" deployment.yaml
+                sed -i '' "s|image:.*|image: ${DOCKERHUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}|g" deployment.yaml
                 git config user.email "hieptvh18@gmail.com"
                 git config user.name "hieptvh18"
                 git add .
